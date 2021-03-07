@@ -55,7 +55,7 @@ resource "aws_s3_bucket" "log-bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.kms-key.arn
+        kms_master_key_id = var.kms-key-id
         sse_algorithm     = "aws:kms"
       }
     }
