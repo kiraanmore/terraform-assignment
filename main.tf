@@ -30,6 +30,7 @@ module "compute" {
     lb-sg-id = module.network.lb-sg-id
     webserver-sg-id = module.network.webserver-sg-id
     bastion-sg-id = module.network.bastion-sg-id
+    depends_on = [module.storage]
 }
 
 #module "iam" {
