@@ -10,8 +10,8 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid    = "alb-logs-put-object"
     actions   = ["s3:PutObject"]
     resources = [
-      "arn:aws:s3:::logs-${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
-      "arn:aws:s3:::logs-${var.log-bucket-name}"
+      "arn:aws:s3:::${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+      "arn:aws:s3:::${var.log-bucket-name}"
     ]
 
     principals {
@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     statement {
     sid    = "alb-logs-put-object-2"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::logs-${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
     condition {
       test = "StringEquals"
       values = ["bucket-owner-full-control"]
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "bucket_policy" {
   statement {
     sid    = "alb-logs-get-acl"
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::logs-${var.log-bucket-name}"]
+    resources = ["arn:aws:s3:::${var.log-bucket-name}"]
 
     principals {
       type        = "Service"
