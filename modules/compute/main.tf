@@ -78,9 +78,9 @@ resource "aws_launch_configuration" "webserver-lc" {
 }
 
 resource "aws_autoscaling_group" "webserver-asg" {
-  desired_capacity   = 1
+  desired_capacity   = 2
   max_size           = 1
-  min_size           = 1
+  min_size           = 4
   launch_configuration = aws_launch_configuration.webserver-lc.name
   vpc_zone_identifier = [var.private-subnet-1-id, var.private-subnet-2-id]
   target_group_arns = ["${aws_lb_target_group.http-tg.arn}"]
