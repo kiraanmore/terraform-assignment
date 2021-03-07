@@ -6,17 +6,46 @@ data "aws_elb_service_account" "main" {
 
 data "aws_iam_policy_document" "bucket_policy" {
 
-    policy_id = "s3_lb_write"
+    statement {
+    sid    = "alb-logs-put-object"
+    actions   = ["s3:PutObject"]
+    resources = [
+      "arn:aws:s3:::logs-${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+      "arn:aws:s3:::logs-${var.log-bucket-name}"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_elb_service_account.main.id}:root"]
+    }
+  }
 
     statement {
-        actions = ["s3:PutObject"]
-        resources = ["arn:aws:s3:::${var.log-bucket-name}/alb-logs/*"]
-
-        principals {
-            identifiers = ["${data.aws_elb_service_account.main.arn}"]
-            type = "AWS"
-        }
+    sid    = "alb-logs-put-object-2"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::logs-${var.log-bucket-name}/alb-logs/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    condition {
+      test = "StringEquals"
+      values = ["bucket-owner-full-control"]
+      variable = "s3:x-amz-acl"
     }
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "alb-logs-get-acl"
+    actions   = ["s3:GetBucketAcl"]
+    resources = ["arn:aws:s3:::logs-${var.log-bucket-name}"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_s3_bucket" "log-bucket" {

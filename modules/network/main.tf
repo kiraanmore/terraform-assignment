@@ -174,7 +174,7 @@ resource "aws_network_acl" "private-nacl" {
 
   ingress {
     protocol   = "tcp"
-    rule_no    = 100
+    rule_no    = 200
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 1024
