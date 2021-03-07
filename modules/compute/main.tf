@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "http-tg" {
   name     = "http-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = var.vpc-id
+  vpc_id   = "${var.vpc-id}"
 }
 
 resource "aws_lb_listener" "http" {
@@ -83,5 +83,5 @@ resource "aws_autoscaling_group" "webserver-asg" {
   min_size           = 1
   launch_configuration = aws_launch_configuration.webserver-lc.name
   vpc_zone_identifier = [var.private-subnet-1-id, var.private-subnet-2-id]
-  target_group_arns = aws_lb_target_group.http-tg.arn
+  target_group_arns = ["${aws_lb_target_group.http-tg.arn}"]
 }
