@@ -8,11 +8,11 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     policy_id = "s3_lb_write"
 
-    statement = {
+    statement {
         actions = ["s3:PutObject"]
         resources = ["arn:aws:s3:::${var.log-bucket-name}/alb-logs/*"]
 
-        principals = {
+        principals {
             identifiers = ["${data.aws_elb_service_account.main.arn}"]
             type = "AWS"
         }

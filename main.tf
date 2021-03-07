@@ -14,6 +14,7 @@ module "security" {
 module "storage" {
     source = "./modules/storage"
     log-bucket-name = var.log-bucket-name
+    kms-key-id = module.security.kms-key-id
 }
 
 module "compute" {
