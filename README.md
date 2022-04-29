@@ -16,3 +16,4 @@ Steps to execute :
 6. Type *yes* when prompted.
 
 Assignment is divided into modules for Network, Compute and Storage components. Executing it from root of the repository will execute *main.tf* which invokes other modules.
+
